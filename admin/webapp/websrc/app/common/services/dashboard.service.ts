@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { GlobalConstant } from '@common/constants/global.constant';
 import { GlobalVariable } from '@common/variables/global.variable';
 import { PathConstant } from '@common/constants/path.constant';
-import { AuthService } from '@services/auth.service';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 import { DashboardHttpService } from '@common/api/dashboard-http.service';
 import { AssetsHttpService } from '@common/api/assets-http.service';
@@ -21,7 +20,6 @@ export class DashboardService {
   hierarchicalEgressList: Array<HierarchicalExposure>;
 
   constructor(
-    private authService: AuthService,
     private assetsHttpService: AssetsHttpService,
     private dashboardHttpService: DashboardHttpService
   ) {}
@@ -51,9 +49,9 @@ export class DashboardService {
     return this.dashboardHttpService.getSummaryData(domain).pipe();
   };
 
-  getRbacData = () => {
-    return this.dashboardHttpService.getSystemRBAC().pipe();
-  };
+  getSystemAlerts = () => {
+    return this.dashboardHttpService.getSystemAlerts().pipe();
+  }
 
   getIpGeoInfo = (ipList: Array<string>) => {
     return GlobalVariable.http.patch(PathConstant.IP_GEO_URL, ipList).pipe();
@@ -64,12 +62,12 @@ export class DashboardService {
       console.warn('Summary uninitialized');
     }
 
-    const rbacPromise = this.getRbacData();
+    const systemAlertPromise = this.getSystemAlerts();
     const scorePromise = this.getScoreData(
       isGlobalUser,
       null
     );
-    return forkJoin([rbacPromise, scorePromise]).pipe();
+    return forkJoin([systemAlertPromise, scorePromise]).pipe();
   };
 
   getDomainReportData = (

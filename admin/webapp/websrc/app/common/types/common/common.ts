@@ -65,6 +65,7 @@ export function isErrorResponse(err: ErrorResponse): err is ErrorResponse {
 }
 
 export enum GlobalNotificationType {
+  SYSTEM_ALERT_NOTIFICATION = 'SYSTEM_ALERT_NOTIFICATION',
   RBAC_NOTIFICATION = 'RBAC_NOTIFICATION',
   MANAGER_NOTIFICATION = 'MANAGER_NOTIFICATION',
   USER_NOTIFICATION = 'USER_NOTIFICATION'
@@ -77,7 +78,8 @@ export interface GlobalNotification {
   message: string;
   link: string;
   labelClass: string;
-  accepted: boolean;
+  acceptable: boolean;
+  accepted?: boolean;
   unClamped: boolean;
 }
 

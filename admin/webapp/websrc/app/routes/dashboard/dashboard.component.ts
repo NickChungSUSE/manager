@@ -4,18 +4,16 @@ import { GlobalConstant } from '@common/constants/global.constant';
 import { DashboardService } from '@services/dashboard.service';
 import {
   SystemSummaryDetails,
-  RbacAlertsData,
   InternalSystemInfo,
+  SystemAlertSummary,
 } from '@common/types';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DashboardSecurityEventsService } from './thread-services/dashboard-security-events.service';
 import { DashboardDetailsService } from './thread-services/dashboard-details.service';
-import { DashboardExposureConversationsService } from './thread-services/dashboard-exposure-conversations.service';
 import { MultiClusterService } from '@services/multi-cluster.service';
 import { Router } from '@angular/router';
 import { AssetsHttpService } from '@common/api/assets-http.service';
 import { ReportByNamespaceModalComponent } from './report-by-namespace-modal/report-by-namespace-modal.component';
-import { AuthService } from '@common/services/auth.service';
 import { isAuthorized } from '@common/utils/common.utils';
 import { SummaryService } from '@services/summary.service';
 
@@ -25,9 +23,11 @@ import { SummaryService } from '@services/summary.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('dashboardReport') printableReport!: ElementRef;
+
   isGlobalUser: boolean = false;
   summaryInfo!: SystemSummaryDetails;
-  rbacInfo!: RbacAlertsData;
+  systemAlertInfo!: SystemAlertSummary;
   scoreInfo!: InternalSystemInfo;
   isPrinting: boolean = false;
   iskube: boolean = false;
@@ -35,18 +35,16 @@ export class DashboardComponent implements OnInit {
   reportDomain: string = '';
   reportInfo: any;
   isShowingScore: boolean = false;
+
   private _switchClusterSubscriber;
-  @ViewChild('dashboardReport') printableReport!: ElementRef;
 
   constructor(
     private dashboardService: DashboardService,
     private dashboardSecurityEventsService: DashboardSecurityEventsService,
     public dashboardDetailsService: DashboardDetailsService,
-    // private dashboardExposureConversationsService: DashboardExposureConversationsService,
     private multiClusterService: MultiClusterService,
     private router: Router,
     private assetsHttpService: AssetsHttpService,
-    private authService: AuthService,
     private summaryService: SummaryService,
     private dialog: MatDialog
   ) {}
@@ -99,13 +97,13 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getBasicData(this.isGlobalUser).subscribe(
       (response: any) => {
         this.summaryInfo = GlobalVariable.summary as SystemSummaryDetails;
-        this.rbacInfo = response[0] as RbacAlertsData;
+        this.systemAlertInfo = response[0] as SystemAlertSummary;
         this.scoreInfo = response[1] as InternalSystemInfo;
         console.log(
           'summaryInfo',
           this.summaryInfo,
-          'rbacInfo',
-          this.rbacInfo,
+          'systemAlertInfo',
+          this.systemAlertInfo,
           'scoreInfo',
           this.scoreInfo
         );
