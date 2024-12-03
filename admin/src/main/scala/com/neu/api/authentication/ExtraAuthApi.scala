@@ -1,10 +1,10 @@
 package com.neu.api.authentication
 
 import com.neu.api.BaseApi
-import com.neu.model.*
-import com.neu.model.AuthTokenJsonProtocol.given
-import com.neu.service.Utils
-import com.neu.service.authentication.ExtraAuthService
+import com.neu.application.service.Utils
+import com.neu.application.service.authentication.ExtraAuthService
+import com.neu.application.model.AuthTokenJsonProtocol.given
+import com.neu.application.model.{ApikeyWrap, Eula, LdapServerAccountWrap, LdapSettingWrap, LicenseKey, LicenseRequestWrap, PasswordProfileWrap, RoleWrap, User, UserBlockWrap, UserProfile}
 import org.apache.pekko.http.scaladsl.server.Route
 
 //noinspection UnstableApiUsage

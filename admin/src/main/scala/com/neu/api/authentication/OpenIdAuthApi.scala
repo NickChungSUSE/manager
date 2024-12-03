@@ -1,8 +1,8 @@
 package com.neu.api.authentication
 
 import com.neu.api.*
-import com.neu.service.Utils
-import com.neu.service.authentication.AuthService
+import com.neu.application.service.Utils
+import com.neu.application.service.authentication.AuthService
 import org.apache.pekko.http.scaladsl.server.Route
 
 //noinspection UnstableApiUsage

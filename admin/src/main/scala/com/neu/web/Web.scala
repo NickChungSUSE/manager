@@ -1,8 +1,7 @@
 package com.neu.web
 
 import com.neu.api.Api
-import com.neu.core.Core
-import com.neu.core.CoreActors
+import com.neu.application.core.{ Core, CoreActors }
 
 /**
  * Provides the web server (spray-can) for the REST api in ``Api``, using the actor system defined

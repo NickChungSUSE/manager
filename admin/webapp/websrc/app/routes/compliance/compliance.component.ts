@@ -1,4 +1,10 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+  OnInit,
+} from '@angular/core';
 import { ComplianceService } from './compliance.service';
 import { ComplianceCsvService } from './csv-generation/compliance-csv.service';
 import { ComplianceFilterService } from './compliance.filter.service';
@@ -9,7 +15,7 @@ import { MapConstant } from '@common/constants/map.constant';
   templateUrl: './compliance.component.html',
   styleUrls: ['./compliance.component.scss'],
 })
-export class ComplianceComponent {
+export class ComplianceComponent implements OnInit {
   complianceData$ = this.complianceService.initCompliance();
   masterData: any;
   masterGrids: any[][] = [];
@@ -27,10 +33,18 @@ export class ComplianceComponent {
   @ViewChild('assetsViewReport') printableReportViewAssets!: ElementRef;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private complianceService: ComplianceService,
     private complianceCsvService: ComplianceCsvService,
     public complianceFilterService: ComplianceFilterService
   ) {}
+
+  ngOnInit(): void {
+    this.complianceData$.subscribe(d => {
+      console.log(d);
+      this.cdr.detectChanges();
+    });
+  }
 
   refresh() {
     this.complianceService.refresh();

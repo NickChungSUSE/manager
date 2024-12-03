@@ -1,11 +1,16 @@
 package com.neu.api.workload
 
 import com.neu.api.BaseApi
-import com.neu.model.*
-import com.neu.model.ContainerConfigJsonProtocol.given
-import com.neu.model.NamespaceJsonProtocol.given
-import com.neu.service.Utils
-import com.neu.service.workload.WorkloadService
+import com.neu.application.service.Utils
+import com.neu.application.service.workload.WorkloadService
+import com.neu.application.model.ContainerConfigJsonProtocol.given
+import com.neu.application.model.{
+  ContainerQuarantineRequest,
+  DomainConfig,
+  NamespaceConfig,
+  SnifferData
+}
+import com.neu.application.model.NamespaceJsonProtocol.given
 import org.apache.pekko.http.scaladsl.server.Route
 
 class WorkloadApi(resourceService: WorkloadService) extends BaseApi {

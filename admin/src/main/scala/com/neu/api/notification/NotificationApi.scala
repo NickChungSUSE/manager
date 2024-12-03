@@ -1,13 +1,13 @@
 package com.neu.api.notification
 
 import com.neu.api.BaseApi
-import com.neu.client.RestClient.*
-import com.neu.model.*
-import com.neu.model.AlertJsonProtocol.given
-import com.neu.model.EndpointConfigJsonProtocol.given
-import com.neu.model.JsonProtocol.{ *, given }
-import com.neu.service.Utils
-import com.neu.service.notification.NotificationService
+import com.neu.application.service.Utils
+import com.neu.application.service.notification.NotificationService
+import com.neu.infrastructure.client.RestClient.*
+import com.neu.application.model.AlertJsonProtocol.given
+import com.neu.application.model.EndpointConfigJsonProtocol.given
+import com.neu.application.model.{EndpointConfigWrap, GlobalNotificationRequest, UserBlacklist, UserGraphLayout, ViolationBrief}
+import com.neu.application.model.JsonProtocol.{*, given}
 import org.apache.pekko.http.scaladsl.server.Route
 
 /**

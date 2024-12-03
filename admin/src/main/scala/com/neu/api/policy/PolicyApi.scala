@@ -1,13 +1,28 @@
 package com.neu.api.policy
 
 import com.neu.api.BaseApi
-import com.neu.client.RestClient.*
-import com.neu.model.*
-import com.neu.model.AdmissionJsonProtocol.given
-import com.neu.model.PolicyJsonProtocol.given
-import com.neu.model.RegistryConfigJsonProtocol.given
-import com.neu.service.Utils
-import com.neu.service.policy.PolicyService
+import com.neu.application.model.{
+  AdmConfig,
+  AdmExport,
+  AdmRuleConfig,
+  DeployFedRulesConfig,
+  Policy2,
+  PromoteConfig,
+  RegistryConfigV2DTO,
+  RegistryConfigV2Wrap,
+  Request,
+  ResponseRuleConfig,
+  ResponseRulesWrap,
+  Rule,
+  RuleConfig,
+  ScanConfigWrap
+}
+import com.neu.application.service.Utils
+import com.neu.application.service.policy.PolicyService
+import com.neu.infrastructure.client.RestClient.*
+import com.neu.application.model.AdmissionJsonProtocol.given
+import com.neu.application.model.PolicyJsonProtocol.given
+import com.neu.application.model.RegistryConfigJsonProtocol.given
 import org.apache.pekko.http.scaladsl.server.Route
 import org.apache.pekko.http.scaladsl.unmarshalling.Unmarshaller
 
