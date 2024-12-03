@@ -1,11 +1,17 @@
 package com.neu.api.device
 
 import com.neu.api.BaseApi
-import com.neu.client.RestClient.*
-import com.neu.model.*
-import com.neu.model.SystemConfigJsonProtocol.given
-import com.neu.service.Utils
-import com.neu.service.device.DeviceService
+import com.neu.application.service.Utils
+import com.neu.application.service.device.DeviceService
+import com.neu.infrastructure.client.RestClient.*
+import com.neu.application.model.SystemConfigJsonProtocol.given
+import com.neu.application.model.{
+  RemoteRepository,
+  RemoteRepositoryWrap,
+  SystemConfig,
+  SystemConfigWrap,
+  Webhook
+}
 import org.apache.pekko.http.scaladsl.model.*
 import org.apache.pekko.http.scaladsl.server.Route
 import org.apache.pekko.http.scaladsl.unmarshalling.Unmarshaller

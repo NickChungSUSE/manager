@@ -1,12 +1,22 @@
 package com.neu.api.risk
 
 import com.neu.api.BaseApi
-import com.neu.client.RestClient.*
-import com.neu.model.*
-import com.neu.model.ComplianceJsonProtocol.given
-import com.neu.model.VulnerabilityJsonProtocol.given
-import com.neu.service.Utils
-import com.neu.service.risk.RiskService
+import com.neu.application.service.Utils
+import com.neu.application.service.risk.RiskService
+import com.neu.infrastructure.client.RestClient.*
+import com.neu.application.model.ComplianceJsonProtocol.given
+import com.neu.application.model.{
+  ComplianceNISTConfigData,
+  ComplianceProfileConfig,
+  ComplianceProfileExportData,
+  ScannedAssetsQuery,
+  TimeRange,
+  VulnerabilityProfileConfigData,
+  VulnerabilityProfileEntryConfigData,
+  VulnerabilityProfileExportData,
+  VulnerabilityQuery
+}
+import com.neu.application.model.VulnerabilityJsonProtocol.given
 import org.apache.pekko.http.scaladsl.server.Route
 
 //noinspection UnstableApiUsage
