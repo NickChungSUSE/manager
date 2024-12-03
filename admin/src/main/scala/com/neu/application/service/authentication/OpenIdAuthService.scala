@@ -3,8 +3,8 @@ package com.neu.application.service.authentication
 import com.neu.application.core.AuthenticationManager
 import com.neu.infrastructure.client.RestClient.*
 import com.neu.infrastructure.client.RestClient
-import com.neu.application.model.AuthTokenJsonProtocol.{*, given}
-import com.neu.application.model.{RedirectURL, SamlResponse, SamlToken, UserTokenNew}
+import com.neu.application.model.AuthTokenJsonProtocol.{ *, given }
+import com.neu.application.model.{ RedirectURL, SamlResponse, SamlToken, UserTokenNew }
 import org.apache.pekko.http.scaladsl.model.*
 import org.apache.pekko.http.scaladsl.model.headers.HttpCookie
 import org.apache.pekko.http.scaladsl.server.RequestContext

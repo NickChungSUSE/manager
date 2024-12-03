@@ -1,11 +1,11 @@
 package com.neu.api.dashboard
 
 import com.neu.api.BaseApi
+import com.neu.application.model.DashboardJsonProtocol.given
+import com.neu.application.model.MetricsWrap
 import com.neu.application.service.Utils
 import com.neu.application.service.dashboard.DashboardService
 import com.neu.infrastructure.client.RestClient.*
-import com.neu.application.model.DashboardJsonProtocol.given
-import com.neu.application.model.{Metrics, ScoreInput}
 import org.apache.pekko.http.scaladsl.server.Route
 
 /**

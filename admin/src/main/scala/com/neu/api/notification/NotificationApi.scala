@@ -6,8 +6,14 @@ import com.neu.application.service.notification.NotificationService
 import com.neu.infrastructure.client.RestClient.*
 import com.neu.application.model.AlertJsonProtocol.given
 import com.neu.application.model.EndpointConfigJsonProtocol.given
-import com.neu.application.model.{EndpointConfigWrap, GlobalNotificationRequest, UserBlacklist, UserGraphLayout, ViolationBrief}
-import com.neu.application.model.JsonProtocol.{*, given}
+import com.neu.application.model.{
+  EndpointConfigWrap,
+  GlobalNotificationRequest,
+  UserBlacklist,
+  UserGraphLayout,
+  ViolationBrief
+}
+import com.neu.application.model.JsonProtocol.{ *, given }
 import org.apache.pekko.http.scaladsl.server.Route
 
 /**
