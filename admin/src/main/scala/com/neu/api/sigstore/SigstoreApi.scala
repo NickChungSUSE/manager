@@ -1,11 +1,11 @@
 package com.neu.api.sigstore
 
 import com.neu.api.BaseApi
-import com.neu.client.RestClient.*
-import com.neu.model.*
-import com.neu.model.SigstoreJsonProtocol.given
-import com.neu.service.Utils
-import com.neu.service.sigstore.SigstoreService
+import com.neu.application.model.{ RootOfTrust, Verifier }
+import com.neu.application.service.Utils
+import com.neu.application.service.sigstore.SigstoreService
+import com.neu.infrastructure.client.RestClient.*
+import com.neu.application.model.SigstoreJsonProtocol.given
 import org.apache.pekko.http.scaladsl.server.Route
 
 class SigstoreApi(resourceService: SigstoreService) extends BaseApi {
