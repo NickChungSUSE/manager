@@ -5,7 +5,7 @@ import com.neu.application.service.Utils
 import com.neu.application.service.dashboard.DashboardService
 import com.neu.infrastructure.client.RestClient.*
 import com.neu.application.model.DashboardJsonProtocol.given
-import com.neu.application.model.{Metrics, ScoreInput}
+import com.neu.application.model.{ Metrics, ScoreInput }
 import org.apache.pekko.http.scaladsl.server.Route
 
 /**
