@@ -8,6 +8,7 @@ export class GlobalConstant {
   public static LOCAL_STORAGE_TIMEOUT = 'local_timeout';
   public static LOCAL_STORAGE_THEME = 'theme';
   public static REQ_TOKEN = 'X-Auth-Token';
+  public static CORRELATION_ID = 'X-Correlation-Id';
   // public static REQ_CONTENT_TYPE = "Content-Type";
   // public static REQ_CONTENT_TYPE_VAL = "application/json";
   public static LOGIN_URL = 'auth';

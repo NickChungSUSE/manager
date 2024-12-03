@@ -1,10 +1,22 @@
 package com.neu.application.service.cluster
 
-import com.neu.application.service.{BaseService, DefaultJsonFormats}
+import com.neu.application.service.{ BaseService, DefaultJsonFormats }
 import com.neu.infrastructure.client.RestClient.fedUri
 import com.neu.infrastructure.client.RestClient
-import com.neu.application.model.ClusterJsonProtocol.{*, given}
-import com.neu.application.model.{ClusterServer, ClusterSwitched, DeployFedRulesReq, FedConfigData, FedJoinRequest, FedJointCluster, FedLeaveRequest, FedMasterCluster, FedMemberData, FedMembershipData, FedPromptRequest}
+import com.neu.application.model.ClusterJsonProtocol.{ *, given }
+import com.neu.application.model.{
+  ClusterServer,
+  ClusterSwitched,
+  DeployFedRulesReq,
+  FedConfigData,
+  FedJoinRequest,
+  FedJointCluster,
+  FedLeaveRequest,
+  FedMasterCluster,
+  FedMemberData,
+  FedMembershipData,
+  FedPromptRequest
+}
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.pekko.http.scaladsl.model.HttpMethods
 import org.apache.pekko.http.scaladsl.server.Route
