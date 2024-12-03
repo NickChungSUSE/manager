@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
-import { catchError, map, repeatWhen, tap } from 'rxjs/operators';
+import { catchError, map, repeatWhen, retry, tap } from 'rxjs/operators';
 import {
   Compliance,
   ComplianceAvailableFilters,
@@ -19,6 +19,7 @@ import { AssetsHttpService } from '@common/api/assets-http.service';
 import { RisksHttpService } from '@common/api/risks-http.service';
 import { MapConstant } from '@common/constants/map.constant';
 import { GridApi } from 'ag-grid-community';
+import { delay } from 'lodash';
 
 @Injectable()
 export class ComplianceService {
@@ -46,11 +47,6 @@ export class ComplianceService {
   transformDate(date) {
     return this.datePipe.transform(date, 'MMM dd, y HH:mm:ss');
   }
-
-  // runWorkers() {
-  //   this.assetsViewPdfService.runWorker();
-  //   this.complianceViewPdfService.runWorker();
-  // }
 
   initComplianceDetails() {
     this.selectedComplianceSubject$.next(undefined);
@@ -135,9 +131,6 @@ export class ComplianceService {
           this.complianceFilterService.filteredCis = compliances;
         }
       ),
-      // finalize(() => {
-      //   this.runWorkers();
-      // }),
       repeatWhen(() => this.refreshSubject$)
     );
   }

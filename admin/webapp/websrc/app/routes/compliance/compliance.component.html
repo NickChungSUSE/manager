@@ -6,7 +6,7 @@
   ">
   <app-risks-view-report
     #complianceViewReport
-    *ngIf="complianceList && isPrinting"
+    *ngIf="complianceData && complianceList && isPrinting"
     class="printable-area"
     [reportPage]="'compliance'"
     [data]="complianceList"

@@ -1,7 +1,6 @@
 package com.neu.cache
 
-import com.neu.model.Blacklist
-import com.neu.model.UserBlacklist
+import com.neu.application.model.{ Blacklist, UserBlacklist }
 import net.sf.ehcache.CacheManager
 
 object BlacklistCacheManager {
@@ -21,10 +20,11 @@ object BlacklistCacheManager {
 
   /**
    * Get blacklist of user for Graph
+   *
    * @param user
    *   the user
    * @return
-   *   [[com.neu.model.Blacklist]]
+   *   [[Blacklist]]
    */
   def getBlacklist(user: String): Option[Blacklist] = cache.get(user + "blacklist")
 }

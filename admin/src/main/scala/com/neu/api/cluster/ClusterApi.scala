@@ -1,10 +1,10 @@
 package com.neu.api.cluster
 
 import com.neu.api.BaseApi
-import com.neu.model.*
-import com.neu.model.ClusterJsonProtocol.given
-import com.neu.service.Utils
-import com.neu.service.cluster.ClusterService
+import com.neu.application.service.Utils
+import com.neu.application.service.cluster.ClusterService
+import com.neu.application.model.ClusterJsonProtocol.given
+import com.neu.application.model.{DeployFedRulesReq, FedConfigData, FedJoinRequest, FedLeaveRequest, FedPromptRequest}
 import org.apache.pekko.http.scaladsl.server.Route
 
 class ClusterApi(resourceService: ClusterService) extends BaseApi {

@@ -1,7 +1,7 @@
 package com.neu.api.authentication
 
 import com.neu.api.BaseApi
-import com.neu.service.authentication.*
+import com.neu.application.service.authentication.{ AuthService, ExtraAuthService }
 import org.apache.pekko.http.scaladsl.server.Route
 
 /**
