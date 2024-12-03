@@ -1,6 +1,7 @@
 package com.neu.api.authentication
 
 import com.neu.api.*
+import com.neu.api.aspect.EventStoreAspect
 import com.neu.application.service.Utils
 import com.neu.application.service.authentication.AuthService
 import com.neu.infrastructure.client.RestClient.*
@@ -16,7 +17,8 @@ import java.util.Base64
 class SamlAuthApi(
   authService: AuthService
 ) extends BaseApi
-    with LazyLogging {
+    with LazyLogging
+    with EventStoreAspect {
 
   private val samlSloResp = "samlslo"
   private val saml        = "token_auth_server"
@@ -67,14 +69,18 @@ class SamlAuthApi(
     } ~
     headerValueByName("Token") { tokenId =>
       (get & path(samlslo)) {
-        extractClientIP { _ =>
-          optionalHeaderValueByName("Host") { host =>
-            logger.info("samlslo")
-            Utils.respondWithWebServerHeaders() {
-              authService.logout(host, tokenId)
+        withEventStore(
+          extractClientIP { _ =>
+            optionalHeaderValueByName("Host") { host =>
+              logger.info("samlslo")
+              Utils.respondWithWebServerHeaders() {
+                authService.logout(host, tokenId)
+              }
             }
-          }
-        }
+          },
+          "AUTHENTICATION",
+          "Logout"
+        )
       }
     }
 }

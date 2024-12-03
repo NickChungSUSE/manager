@@ -45,6 +45,8 @@ lazy val commonDependencies = Seq(
   "org.bouncycastle"   % "bcprov-jdk18on"     % "1.79",
   "org.bouncycastle"   % "bcpkix-jdk18on"     % "1.79",
   "org.bouncycastle"   % "bctls-jdk18on"      % "1.79",
+  "dev.zio" %% "zio-opentelemetry" % "3.0.0",
+  "io.opentelemetry" % "opentelemetry-sdk" % "1.44.1",
   pekkoActor,
   typesafeConfig,
   joda,
@@ -109,20 +111,20 @@ lazy val admin = (project in file("admin"))
   )
 
 resolvers ++= Seq(
-  ("spray repo".at("http://repo.spray.io")).withAllowInsecureProtocol(true),
-  ("scalaz-bintray".at("http://dl.bintray.com/scalaz/releases")).withAllowInsecureProtocol(true),
+  "spray repo".at("http://repo.spray.io").withAllowInsecureProtocol(true),
+  "scalaz-bintray".at("http://dl.bintray.com/scalaz/releases").withAllowInsecureProtocol(true),
   "Typesafe repository snapshots".at("https://repo.typesafe.com/typesafe/snapshots/"),
   "Typesafe repository releases".at("https://repo.typesafe.com/typesafe/releases/"),
   "Sonatype repo".at("https://oss.sonatype.org/content/groups/scala-tools/"),
   "Sonatype releases".at("https://oss.sonatype.org/content/repositories/releases"),
   "Sonatype snapshots".at("https://oss.sonatype.org/content/repositories/snapshots"),
-  ("Sonatype staging"
-    .at("http://oss.sonatype.org/content/repositories/staging"))
+  "Sonatype staging"
+    .at("http://oss.sonatype.org/content/repositories/staging")
     .withAllowInsecureProtocol(true),
-  ("Java.net Maven2 Repository"
-    .at("http://download.java.net/maven/2/"))
+  "Java.net Maven2 Repository"
+    .at("http://download.java.net/maven/2/")
     .withAllowInsecureProtocol(true),
-  ("geomajas repo".at("http://maven.geomajas.org")).withAllowInsecureProtocol(true)
+  "geomajas repo".at("http://maven.geomajas.org").withAllowInsecureProtocol(true)
 )
 
 Test / scalacOptions ++= Seq("-Yrangepos")
