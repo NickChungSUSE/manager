@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { Compliance } from '@common/types';
 import {
@@ -32,7 +33,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './compliance-items-table.component.html',
   styleUrls: ['./compliance-items-table.component.scss'],
 })
-export class ComplianceItemsTableComponent implements OnInit, OnDestroy {
+export class ComplianceItemsTableComponent
+  implements OnInit, OnDestroy, OnChanges
+{
   @Input() rowData!: Compliance[];
   @Input() gridHeight!: number;
   @Input() domains!: string[];
@@ -159,7 +162,7 @@ export class ComplianceItemsTableComponent implements OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.gridApi && changes.rowData) {
-      this.gridApi.setRowData(changes.rowData.currentValue);
+      this.gridApi.setGridOption('rowData', changes.rowData.currentValue);
     }
   }
 
@@ -172,7 +175,7 @@ export class ComplianceItemsTableComponent implements OnInit, OnDestroy {
       return compliance;
     });
     setTimeout(() => {
-      this.gridApi.setRowData(this.rowData);
+      this.gridApi.setGridOption('rowData', this.rowData);
       this.gridApi.sizeColumnsToFit();
       this.gridApi.forEachNode(node =>
         node.rowIndex ? 0 : node.setSelected(true)

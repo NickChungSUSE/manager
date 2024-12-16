@@ -55,9 +55,7 @@ export class LayersTableComponent implements OnInit, OnChanges {
     },
   ];
 
-  constructor(
-    private translate: TranslateService
-  ) {}
+  constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {
     this.gridOptions = {
@@ -70,7 +68,7 @@ export class LayersTableComponent implements OnInit, OnChanges {
       onGridReady: event => this.onGridReady(event),
       onSelectionChanged: event => this.onSelectionChanged(event),
       components: { cvesCellRenderer: LayersTableCvesCellComponent },
-      overlayNoRowsTemplate: this.translate.instant('general.NO_ROWS')
+      overlayNoRowsTemplate: this.translate.instant('general.NO_ROWS'),
     };
   }
 
@@ -84,7 +82,7 @@ export class LayersTableComponent implements OnInit, OnChanges {
       this.gridApi.sizeColumnsToFit();
     }
     if (changes.rowData && this.gridApi) {
-      this.gridApi.setRowData(changes.rowData.currentValue);
+      this.gridApi.setGridOption('rowData', changes.rowData.currentValue);
       this.gridApi.forEachNode(node =>
         node.rowIndex ? 0 : node.setSelected(true)
       );
@@ -106,10 +104,7 @@ export class LayersTableComponent implements OnInit, OnChanges {
   digestFormatter(params: ValueFormatterParams): string {
     let digest: string;
     if (params.node?.firstChild) {
-      digest = shortenString(
-        params.data.digest.substring(7),
-        15
-      );
+      digest = shortenString(params.data.digest.substring(7), 15);
     } else if (params.node?.lastChild) {
       digest = `\u2517\u00A0${shortenString(
         params.data.digest.substring(7),

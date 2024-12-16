@@ -123,7 +123,11 @@ export class NetworkRulesComponent implements OnInit, OnChanges, OnDestroy {
         if (params && params.api) {
           if (this.useQuickFilterService) {
             this.quickFilterService.textInput$.subscribe((value: string) => {
-              this.quickFilterService.onFilterChange(value, this.gridOptions, this.gridApi);
+              this.quickFilterService.onFilterChange(
+                value,
+                this.gridOptions,
+                this.gridApi
+              );
             });
           }
           params.api.sizeColumnsToFit();
@@ -244,23 +248,20 @@ export class NetworkRulesComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   addNetworkRuleToTop = () => {
-    this.dialog.open(
-      AddEditNetworkRuleModalComponent,
-      {
-        width: '80%',
-        data: {
-          opType: GlobalConstant.MODAL_OP.ADD,
-          networkRuleOptions: this.networkRuleOptions,
-          index: -1,
-          source: this.source,
-          cfgType:
-            this.source === GlobalConstant.NAV_SOURCE.FED_POLICY
-              ? GlobalConstant.SCOPE.FED
-              : GlobalConstant.SCOPE.LOCAL,
-          updateGridData: this.updateGridData,
-        },
-      }
-    );
+    this.dialog.open(AddEditNetworkRuleModalComponent, {
+      width: '80%',
+      data: {
+        opType: GlobalConstant.MODAL_OP.ADD,
+        networkRuleOptions: this.networkRuleOptions,
+        index: -1,
+        source: this.source,
+        cfgType:
+          this.source === GlobalConstant.NAV_SOURCE.FED_POLICY
+            ? GlobalConstant.SCOPE.FED
+            : GlobalConstant.SCOPE.LOCAL,
+        updateGridData: this.updateGridData,
+      },
+    });
   };
 
   openMoveNetworkRulesModal = () => {
@@ -324,8 +325,13 @@ export class NetworkRulesComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   private getServiceRules = () => {
-    this.groupsService
-      .getService(this.groupName)
+    let httpService = '';
+    if (this.groupName === 'nodes') {
+      httpService = 'getGroupInfo';
+    } else {
+      httpService = 'getService';
+    }
+    this.groupsService[httpService](this.groupName)
       .pipe(finalize(() => this.refreshing$.next(false)))
       .subscribe({
         next: service => {
@@ -412,7 +418,8 @@ export class NetworkRulesComponent implements OnInit, OnChanges, OnDestroy {
           // confirm actions
           setTimeout(() => {
             this.gridApi!.deselectAll();
-            this.networkRulesService.squence = GlobalConstant.NEW_ID_SEED.NETWORK_RULE;
+            this.networkRulesService.squence =
+              GlobalConstant.NEW_ID_SEED.NETWORK_RULE;
             this.getNetworkRules();
           }, 2000);
         },

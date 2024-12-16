@@ -6,11 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { RemoteGridApi } from '@common/types';
-import {
-  GridReadyEvent,
-  IDatasource,
-  IGetRowsParams,
-} from 'ag-grid-community';
+import { GridReadyEvent, IDatasource, IGetRowsParams } from 'ag-grid-community';
 import { EMPTY } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -25,7 +21,7 @@ export class RemoteGridBindingDirective {
 
   @HostListener('gridReady', ['$event'])
   gridReady(event: GridReadyEvent) {
-    event.api.setDatasource(this.dataSource);
+    event.api.setGridOption('datasource', this.dataSource);
     this.remoteGridReady.emit(event);
   }
 
@@ -39,11 +35,9 @@ export class RemoteGridBindingDirective {
       this.remoteGridBinding
         .getData(params)
         .pipe(
-          tap(({ data, totalRecords }) =>
-            {
-              params.successCallback(data, totalRecords);
-            }
-          ),
+          tap(({ data, totalRecords }) => {
+            params.successCallback(data, totalRecords);
+          }),
           catchError(err => this.handleError(err))
         )
         .subscribe();

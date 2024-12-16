@@ -71,8 +71,11 @@ export class EventsGridComponent implements OnInit {
     },
     {
       headerName: this.tr.instant('event.gridHeader.LOCATION'),
-      field: 'workload_name',
       cellRenderer: 'locationCellRenderer',
+      comparator: (value1, value2, node1, node2) =>
+        `${node1.data.host_name},${node1.data.workload_name},${node1.data.workload_domain},${node1.data.workload_image},${node1.data.controller_id},${node1.data.enforcer_name}`.localeCompare(
+          `${node2.data.host_name},${node2.data.workload_name},${node2.data.workload_domain},${node2.data.workload_image},${node2.data.controller_id},${node2.data.enforcer_name}`
+        ),
       width: 250,
     },
     {
@@ -175,10 +178,11 @@ export class EventsGridComponent implements OnInit {
       onGridReady: this.onGridReady.bind(this),
       onRowDataUpdated: this.onRowDataUpdated.bind(this),
       isExternalFilterPresent: () => true,
-      isFullWidthRow: (params: IsFullWidthRowParams<any, any>) => !this.isParent(params.rowNode),
+      isFullWidthRow: (params: IsFullWidthRowParams<any, any>) =>
+        !this.isParent(params.rowNode),
       fullWidthCellRenderer: 'messageCellRenderer',
       rowClassRules: {
-        'nv-full-width-row': (params) => !this.isParent(params.node),
+        'nv-full-width-row': params => !this.isParent(params.node),
       },
       doesExternalFilterPass: ({ data }) =>
         this.isVisible(data) && this.doesExternalFilterPass(data),

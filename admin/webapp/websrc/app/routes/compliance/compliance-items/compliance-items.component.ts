@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Compliance } from '@common/types';
 
 @Component({
@@ -6,7 +6,7 @@ import { Compliance } from '@common/types';
   templateUrl: './compliance-items.component.html',
   styleUrls: ['./compliance-items.component.scss'],
 })
-export class ComplianceItemsComponent implements OnInit {
+export class ComplianceItemsComponent {
   @Input() compliances!: Compliance[];
   @Input() domains!: string[];
   @Input() complianceDist!: any;
@@ -26,6 +26,7 @@ export class ComplianceItemsComponent implements OnInit {
       note: 0,
       pass: 0,
       info: 0,
+      manual: 0,
       platform: 0,
       image: 0,
       node: 0,
@@ -38,6 +39,7 @@ export class ComplianceItemsComponent implements OnInit {
       if (compliance.level === 'NOTE') complianceDist.note += 1;
       if (compliance.level === 'ERROR') complianceDist.error += 1;
       if (compliance.level === 'HIGH') complianceDist.high += 1;
+      if (compliance.level === 'MANUAL') complianceDist.manual += 1;
       if (compliance.platforms.length) complianceDist.platform += 1;
       if (compliance.images.length) complianceDist.image += 1;
       if (compliance.nodes.length) complianceDist.node += 1;
@@ -45,6 +47,4 @@ export class ComplianceItemsComponent implements OnInit {
     });
     this.complianceDist = complianceDist;
   }
-
-  ngOnInit(): void {}
 }

@@ -13,14 +13,14 @@ import { updateGridData } from '@common/utils/common.utils';
 import { UtilsService } from '@common/utils/app.utils';
 import { MapConstant } from '@common/constants/map.constant';
 
-
 @Component({
   selector: 'app-signature-action-buttons',
   templateUrl: './signature-action-buttons.component.html',
-  styleUrls: ['./signature-action-buttons.component.scss']
+  styleUrls: ['./signature-action-buttons.component.scss'],
 })
-export class SignatureActionButtonsComponent implements ICellRendererAngularComp {
-
+export class SignatureActionButtonsComponent
+  implements ICellRendererAngularComp
+{
   params!: ICellRendererParams;
 
   constructor(
@@ -29,7 +29,7 @@ export class SignatureActionButtonsComponent implements ICellRendererAngularComp
     private notificationService: NotificationService,
     private signaturesService: SignaturesService,
     private utils: UtilsService
-  ) { }
+  ) {}
 
   agInit(params: ICellRendererParams): void {
     this.params = params;
@@ -39,21 +39,25 @@ export class SignatureActionButtonsComponent implements ICellRendererAngularComp
     return false;
   }
 
-  editSignature = (data) => {
-    const addEditDialogRef = this.dialog.open(AddEditSignatureVerifiersModalComponent, {
-      width: '80%',
-      data: {
-        signature: data,
-        opType: GlobalConstant.MODAL_OP.EDIT,
-        gridOptions4Signatures: this.params.context.componentParent.gridOptions4Signatures,
-        index4Signature: this.params.context.componentParent.index4Signature,
-        gridApi: this.params.context.componentParent.gridOptions4Signatures.api!,
-        sigstores: this.params.context.componentParent.signatures
-      },
-    });
+  editSignature = data => {
+    const addEditDialogRef = this.dialog.open(
+      AddEditSignatureVerifiersModalComponent,
+      {
+        width: '80%',
+        data: {
+          signature: data,
+          opType: GlobalConstant.MODAL_OP.EDIT,
+          gridOptions4Signatures:
+            this.params.context.componentParent.gridOptions4Signatures,
+          index4Signature: this.params.context.componentParent.index4Signature,
+          gridApi: this.params.context.componentParent.gridApi4Signatures!,
+          sigstores: this.params.context.componentParent.signatures,
+        },
+      }
+    );
   };
 
-  deleteSignature = (data) => {
+  deleteSignature = data => {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: '700px',
       data: {
@@ -72,13 +76,15 @@ export class SignatureActionButtonsComponent implements ICellRendererAngularComp
           updateGridData(
             this.params.context.componentParent.signatures,
             [data],
-            this.params.context.componentParent.gridOptions4Signatures.api!,
+            this.params.context.componentParent.gridApi4Signatures!,
             'name',
             'delete'
           );
           if (this.params.context.componentParent.signatures.length === 0)
-            this.params.context.componentParent.gridOptions4Verifiers.api!.setRowData([]);
-            this.params.context.componentParent.selectedSignature = null;
+            this.params.context.componentParent.gridApi4Verifiers!.setRowData(
+              []
+            );
+          this.params.context.componentParent.selectedSignature = null;
           this.notificationService.open(
             this.translate.instant('signatures.msg.REMOVE_SIGSTORE_OK')
           );
@@ -100,5 +106,4 @@ export class SignatureActionButtonsComponent implements ICellRendererAngularComp
         }
       );
   };
-
 }

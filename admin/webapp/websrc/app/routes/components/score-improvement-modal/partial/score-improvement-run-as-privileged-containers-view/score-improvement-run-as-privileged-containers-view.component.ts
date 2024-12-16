@@ -51,7 +51,11 @@ export class ScoreImprovementRunAsPrivilegedContainersViewComponent
 
   ngOnInit(): void {
     this.filter.valueChanges
-      .pipe(tap((value: string | null) => this.quickFilterService.setTextInput(value || '')))
+      .pipe(
+        tap((value: string | null) =>
+          this.quickFilterService.setTextInput(value || '')
+        )
+      )
       .subscribe();
     this.getPredictionScores();
     this.getWorkloads();
@@ -81,16 +85,14 @@ export class ScoreImprovementRunAsPrivilegedContainersViewComponent
   }
 
   getPredictionScores() {
-    const metrics = JSON.parse(JSON.stringify(this.scoreImprovementModalService.newMetrics()))
+    const metrics = JSON.parse(
+      JSON.stringify(this.scoreImprovementModalService.newMetrics())
+    );
     metrics.workloads.privileged_wls = 0;
     this.scoreImprovementModalService
-      .calculateScoreData(
-        metrics,
-        this.isGlobalUser,
-        this.scoreImprovementModalService.scoreInfo.header_data.workloads.running_pods
-      )
+      .calculateScoreData(metrics)
       .subscribe(scores => {
-        this.projectedScore = scores.securityRiskScore;
+        this.projectedScore = scores.security_scores.security_risk_score;
       });
   }
 

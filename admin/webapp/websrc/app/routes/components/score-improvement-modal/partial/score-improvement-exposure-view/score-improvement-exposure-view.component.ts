@@ -74,9 +74,12 @@ export class ScoreImprovementExposureViewComponent implements OnInit {
   }
 
   getPredictionScores() {
-    const metrics = JSON.parse(JSON.stringify(this.scoreImprovementModalService.newMetrics()))
+    const metrics = JSON.parse(
+      JSON.stringify(this.scoreImprovementModalService.newMetrics())
+    );
     metrics.new_service_policy_mode = 'Protect';
-    metrics.groups.protect_groups += metrics.groups.discover_groups + metrics.groups.monitor_groups;
+    metrics.groups.protect_groups +=
+      metrics.groups.discover_groups + metrics.groups.monitor_groups;
     metrics.groups.monitor_groups = 0;
     metrics.groups.discover_groups = 0;
     metrics.workloads.protect_ext_eps +=
@@ -87,13 +90,9 @@ export class ScoreImprovementExposureViewComponent implements OnInit {
     metrics.workloads.violate_ext_eps = 0;
     metrics.groups.discover_groups_zero_drift = 0;
     this.scoreImprovementModalService
-      .calculateScoreData(
-        metrics,
-        this.isGlobalUser,
-        this.scoreImprovementModalService.scoreInfo.header_data.workloads.running_pods
-      )
+      .calculateScoreData(metrics)
       .subscribe(scores => {
-        this.projectedScore = scores.securityRiskScore;
+        this.projectedScore = scores.security_scores.security_risk_score;
       });
   }
 

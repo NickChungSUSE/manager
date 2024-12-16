@@ -196,7 +196,7 @@ export class ComplianceProfileTemplatesTableComponent
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.gridApi && changes.rowData) {
-      this.gridApi.setRowData(changes.rowData.currentValue);
+      this.gridApi.setGridOption('rowData', changes.rowData.currentValue);
     }
   }
 
@@ -261,7 +261,7 @@ export class ComplianceProfileTemplatesTableComponent
       let res = Object.keys(this.filterForm).filter(
         filter => this.filterForm[filter]
       );
-      return node.data.tags?.some(tag => res.includes(tag)).length > 0;
+      return node.data.tags?.some(tag => res.includes(tag));
     }
   }
 

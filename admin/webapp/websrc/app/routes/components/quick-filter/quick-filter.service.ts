@@ -11,9 +11,13 @@ export class QuickFilterService {
     this.textInputSubject$.next(str);
   }
 
-  onFilterChange(filterStr: string, gridOptions: GridOptions, gridApi: GridApi): void {
+  onFilterChange(
+    filterStr: string,
+    gridOptions: GridOptions,
+    gridApi: GridApi
+  ): void {
     if (gridOptions && gridApi) {
-      gridApi.setQuickFilter(filterStr);
+      gridApi.setGridOption('quickFilterText', filterStr);
     }
   }
 }

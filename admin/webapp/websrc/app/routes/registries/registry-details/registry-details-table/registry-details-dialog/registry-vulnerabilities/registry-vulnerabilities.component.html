@@ -8,7 +8,7 @@
       [matTooltip]="
         ('registry.CVE_DB_DATE' | translate) +
         ': ' +
-        (scannerDate | date: 'medium')
+        (scannerDate | date : 'medium')
       "
       matTooltipPosition="above"
       class="eos-icons icon-18"
@@ -16,6 +16,20 @@
     >
   </div>
   <div class="d-flex flex-row justify-content-center align-items-center">
+    <button
+      [matMenuTriggerFor]="menu"
+      class="mx-2 d-flex align-items-center justify-content-center"
+      mat-button>
+      {{ activeScore }} <i class="eos-icons">arrow_drop_down</i>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="changeScoreView('V2')" mat-menu-item>
+        {{ 'scan.gridHeader.SCORE_V2' | translate }}
+      </button>
+      <button (click)="changeScoreView('V3')" mat-menu-item>
+        {{ 'scan.gridHeader.SCORE_V3' | translate }}
+      </button>
+    </mat-menu>
     <button [matMenuTriggerFor]="menu" class="p-2" mat-button>
       {{ 'network.SETTING' | translate }}
       <i class="eos-icons mb-1">arrow_drop_down</i>
@@ -80,21 +94,30 @@
       [resize]="resize"
       [rowData]="layers"></app-layers-table>
   </div>
-  <div class="terminal" [ngClass]="{'p0 col-8': !selectedLayer.verifiers || selectedLayer.verifiers!.length === 0, 'col-6': selectedLayer.verifiers && selectedLayer.verifiers!.length > 0}">
+  <div
+    class="terminal"
+    [ngClass]="{
+      'p0 col-8':
+        !selectedLayer?.verifiers || (selectedLayer?.verifiers)!.length === 0,
+      'col-6':
+        selectedLayer?.verifiers && (selectedLayer?.verifiers)!.length > 0
+    }">
     <div class="cmds">
       <ng-container *ngIf="selectedLayer?.cmds">
         <span
-          *ngFor="let cmd of selectedLayer.cmds.split(',')"
+          *ngFor="let cmd of selectedLayer!.cmds.split(',')"
           class="d-block"
           >{{ cmd }}</span
         >
       </ng-container>
     </div>
   </div>
-  <div class="col-2 vulnerability-description-container pr-0" *ngIf="selectedLayer?.verifiers && selectedLayer?.verifiers!.length > 0">
+  <div
+    class="col-2 vulnerability-description-container pr-0"
+    *ngIf="selectedLayer?.verifiers && (selectedLayer?.verifiers)!.length > 0">
     <div class="vulnerability-description">
       <div class="vulnerability-description-header">
-        {{ 'registry.SIG_VERIFIERS' | translate}}
+        {{ 'registry.SIG_VERIFIERS' | translate }}
         <i
           [matTooltip]="'registry.SIG_VERIFIERS_HINT' | translate"
           matTooltipPosition="above"
@@ -103,7 +126,12 @@
         >
       </div>
       <div class="vulnerability-verifiers-body">
-        <div *ngFor="let verifier of selectedLayer?.verifiers" class="px-2 type-label info mt-1 auto-hide" style="display: block; text-align: left;" matTooltip="{{ verifier }}" matTooltipPosition="above">
+        <div
+          *ngFor="let verifier of selectedLayer?.verifiers"
+          class="px-2 type-label info mt-1 auto-hide"
+          style="display: block; text-align: left"
+          matTooltip="{{ verifier }}"
+          matTooltipPosition="above">
           <i class="eos-icons icon-12 mr-2">verified</i>{{ verifier }}
         </div>
       </div>
@@ -112,7 +140,7 @@
           {{ 'registry.SIG_VERIFICATION_TIMESTAMP' | translate }}
         </div>
         <div>
-          {{ selectedLayer.verificationTimestamp }}
+          {{ selectedLayer?.verificationTimestamp }}
         </div>
       </div>
     </div>
@@ -121,22 +149,22 @@
     <app-vulnerabilities-grid
       (vulnerabilitySelected)="vulnerabilitySelected($event)"
       [resize]="resize"
-      [rowData]="selectedLayer.vulnerabilities"
+      [rowData]="selectedLayer?.vulnerabilities"
       [useQuickFilterService]="true"
       tableHeight="100%"></app-vulnerabilities-grid>
   </div>
   <div class="col-4 mt-2 vulnerability-description-container p-0">
     <div class="vulnerability-description">
       <div class="vulnerability-description-header">
-        {{ selectedVulnerability.name }}
+        {{ selectedVulnerability?.name }}
         <a
           *ngIf="selectedVulnerability?.link"
-          [href]="selectedVulnerability.link"
+          [href]="selectedVulnerability!.link"
           ><i class="ml-2 eos-icons">launch</i></a
         >
       </div>
       <div class="vulnerability-description-body">
-        {{ selectedVulnerability.description }}
+        {{ selectedVulnerability?.description }}
       </div>
     </div>
   </div>

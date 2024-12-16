@@ -53,11 +53,11 @@ export class RegistriesTableComponent implements OnInit, OnChanges {
     {
       field: 'name',
       cellRenderer: params => {
-        if(params.data && params.value) {
+        if (params.data && params.value) {
           if (!!params.data.isAllView) {
             return `<span class="text-info">${params.value}</span>`;
           }
-          return params.value
+          return params.value;
         }
         return '';
       },
@@ -69,8 +69,7 @@ export class RegistriesTableComponent implements OnInit, OnChanges {
         }
         return 1;
       },
-      headerValueGetter: () =>
-        this.translate.instant('scan.gridHeader.NAME')
+      headerValueGetter: () => this.translate.instant('scan.gridHeader.NAME'),
     },
     {
       field: 'registry',
@@ -211,7 +210,7 @@ export class RegistriesTableComponent implements OnInit, OnChanges {
 
   onSelectionChanged(params: GridReadyEvent): void {
     if (params.api.getSelectedNodes().length > 0) {
-      console.log(params.api.getSelectedNodes()[0].data)
+      console.log(params.api.getSelectedNodes()[0].data);
       this.registriesCommunicationService.setSelectedRegistry(
         params.api.getSelectedNodes()[0].data
       );
@@ -222,8 +221,8 @@ export class RegistriesTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.gridApi && changes.rowData) {
-      this.gridApi.setRowData([]);
-      this.gridApi.setRowData(changes.rowData.currentValue);
+      this.gridApi.setGridOption('rowData', []);
+      this.gridApi.setGridOption('rowData', changes.rowData.currentValue);
 
       // if selected registry is not in the current page, select the first row
       if (changes.rowData.currentValue.length > 0) {
@@ -247,9 +246,13 @@ export class RegistriesTableComponent implements OnInit, OnChanges {
 
   filterCountChanged(results: number) {
     let filteredRowNodes = this.gridApi.getRenderedNodes();
-    let includesViewAll = filteredRowNodes.length > 0 && filteredRowNodes[filteredRowNodes.length - 1].data.isAllView;
+    let includesViewAll =
+      filteredRowNodes.length > 0 &&
+      filteredRowNodes[filteredRowNodes.length - 1].data.isAllView;
     this.filteredCount = results - (includesViewAll ? 1 : 0);
-    this.filtered = this.filteredCount !== this.rowData.length - (!this.isVulAuthorized ? 0 : 1);
+    this.filtered =
+      this.filteredCount !==
+      this.rowData.length - (!this.isVulAuthorized ? 0 : 1);
   }
 
   deleteRegistry(event): void {

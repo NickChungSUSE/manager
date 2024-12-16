@@ -5,21 +5,17 @@ import {
   InternalSystemInfo,
   Metrics,
   Score,
+  PredictedScoreInfo,
 } from '@common/types';
 import { GlobalVariable } from '@common/variables/global.variable';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class DashboardHttpService {
-  patchScores(
-    metrics: Metrics,
-    isGlobalUser: boolean,
-    totalRunningPods: number
-  ): Observable<Score> {
-    return GlobalVariable.http.patch<Score>(
+  patchScores(metrics: { metrics: Metrics }): Observable<PredictedScoreInfo> {
+    return GlobalVariable.http.post<PredictedScoreInfo>(
       PathConstant.DASHBOARD_SCORES_URL,
-      metrics,
-      { params: { isGlobalUser, totalRunningPods } }
+      metrics
     );
   }
 
@@ -45,19 +41,22 @@ export class DashboardHttpService {
   }
 
   getDashboardSecurityEventData(domain?: string) {
-    const options = {}
+    const options = {};
 
-    if(domain) {
+    if (domain) {
       options['params'] = { domain: domain };
     }
-    
-    return GlobalVariable.http.get(PathConstant.DASHBOARD_NOTIFICATIONS_URL, options);
+
+    return GlobalVariable.http.get(
+      PathConstant.DASHBOARD_NOTIFICATIONS_URL,
+      options
+    );
   }
 
   getDashboardDetailsData(domain?: string) {
-    const options = {}
+    const options = {};
 
-    if(domain) {
+    if (domain) {
       options['params'] = { domain: domain };
     }
 
@@ -65,9 +64,9 @@ export class DashboardHttpService {
   }
 
   getSummaryData(domain?: string) {
-    const options = {}
+    const options = {};
 
-    if(domain) {
+    if (domain) {
       options['params'] = { domain: domain };
     }
 

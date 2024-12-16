@@ -49,7 +49,7 @@ export class ApikeysGridComponent implements OnInit {
     this.globalRoles = value.apikeyData.global_roles;
     this.domainRoles = value.apikeyData.domain_roles;
     if (this.gridApi) {
-      this.gridApi.setRowData(this.rowData);
+      this.gridApi.setGridOption('rowData', this.rowData);
       this.gridApi.sizeColumnsToFit();
     }
   }
@@ -211,7 +211,7 @@ export class ApikeysGridComponent implements OnInit {
           updateGridData(
             this.rowData,
             [{ apikey_name: name }],
-            this.gridOptions.api!,
+            this.gridApi!,
             'apikey_name',
             'delete'
           );

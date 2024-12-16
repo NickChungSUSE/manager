@@ -66,7 +66,7 @@ export class VulnerabilitiesTableComponent implements OnInit, OnChanges {
       rowSelection: 'single',
       onGridReady: event => this.onGridReady(event),
       components: { statusCellRenderer: StatusCellComponent },
-      overlayNoRowsTemplate: this.translate.instant('general.NO_ROWS')
+      overlayNoRowsTemplate: this.translate.instant('general.NO_ROWS'),
     };
   }
 
@@ -75,7 +75,7 @@ export class VulnerabilitiesTableComponent implements OnInit, OnChanges {
       this.gridApi.sizeColumnsToFit();
     }
     if (changes.rowData && this.gridApi) {
-      this.gridApi.setRowData(changes.rowData.currentValue);
+      this.gridApi.setGridOption('rowData', changes.rowData.currentValue);
     }
   }
 

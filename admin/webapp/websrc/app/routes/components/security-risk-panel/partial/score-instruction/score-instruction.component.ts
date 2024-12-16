@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DashboardService } from '@common/services/dashboard.service';
 import { GlobalConstant } from '@common/constants/global.constant';
 import { ScoreImprovementModalComponent } from '@components/score-improvement-modal/score-improvement-modal.component';
@@ -10,7 +10,7 @@ import { InternalSystemInfo } from '@common/types';
   templateUrl: './score-instruction.component.html',
   styleUrls: ['./score-instruction.component.scss'],
 })
-export class ScoreInstructionComponent implements OnInit {
+export class ScoreInstructionComponent {
   @Input() scoreInfo!: InternalSystemInfo;
 
   constructor(
@@ -18,11 +18,10 @@ export class ScoreInstructionComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {}
-
   isPoorScore = (): boolean => {
     return (
-      this.scoreInfo.score.securityRiskScore > GlobalConstant.SCORE_LEVEL.FAIR
+      this.scoreInfo.security_scores.security_risk_score >
+      GlobalConstant.SCORE_LEVEL.FAIR
     );
   };
 

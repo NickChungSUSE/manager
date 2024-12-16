@@ -4,6 +4,8 @@ import {
   ChangeDetectorRef,
   ViewChild,
   ElementRef,
+  AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { SecurityEventsService } from '@services/security-events.service';
 import { MapConstant } from '@common/constants/map.constant';
@@ -28,13 +30,16 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { arrayToCsv } from '@common/utils/common.utils';
 import { saveAs } from 'file-saver';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-security-events',
   templateUrl: './security-events.component.html',
   styleUrls: ['./security-events.component.scss'],
 })
-export class SecurityEventsComponent implements OnInit {
+export class SecurityEventsComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   threatList: any;
   violationList: any;
   incidentList: any;
@@ -66,6 +71,8 @@ export class SecurityEventsComponent implements OnInit {
   printableData: any[] = [];
   isPrinting: boolean = false;
   rowLimit4Report: number = MapConstant.REPORT_TABLE_ROW_LIMIT;
+  autoRefreshInterval;
+  AUTO_FREFRESH_INTERVAL = 60000;
 
   @ViewChild('securityEventsPrintableReport') printableReportView!: ElementRef;
 
@@ -142,6 +149,7 @@ export class SecurityEventsComponent implements OnInit {
         byEventType: this.translate.instant('securityEvent.pdf.TYPEDIST'),
       },
     };
+    this.autoRefresh();
   }
 
   ngAfterViewInit() {
@@ -150,7 +158,14 @@ export class SecurityEventsComponent implements OnInit {
 
   ngOnDestroy() {
     this.advancedFilterModalService.resetFilter();
+    clearInterval(this.autoRefreshInterval);
   }
+
+  autoRefresh = () => {
+    this.autoRefreshInterval = setInterval(() => {
+      this.preprocessSecurityEventsData();
+    }, this.AUTO_FREFRESH_INTERVAL);
+  };
 
   refresh = () => {
     this.isDataReady = false;
@@ -309,10 +324,13 @@ export class SecurityEventsComponent implements OnInit {
   };
 
   onQuickFilterChange = (filterStr: string) => {
-    this.securityEventsService.displayedSecurityEvents =
-      (this.advFilterConf ? this.securityEventsService.displayedSecurityEvents : this.securityEventsService.cachedSecurityEvents).filter(event => {
-        return this.advancedFilterModalService._includeFilter(event, filterStr);
-      });
+    this.securityEventsService.displayedSecurityEvents = (
+      this.advFilterConf
+        ? this.securityEventsService.displayedSecurityEvents
+        : this.securityEventsService.cachedSecurityEvents
+    ).filter(event => {
+      return this.advancedFilterModalService._includeFilter(event, filterStr);
+    });
     this.printableData = this.getPrintableData(
       this.securityEventsService.displayedSecurityEvents
     );
@@ -407,7 +425,9 @@ export class SecurityEventsComponent implements OnInit {
                 secEvent.endpoint.destination.domain
                   ? `${secEvent.endpoint.destination.domain}: `
                   : ''
-              }${secEvent.endpoint.destination.displayName} (${secEvent.endpoint.destination.ip})`,
+              }${secEvent.endpoint.destination.displayName} (${
+                secEvent.endpoint.destination.ip
+              })`,
             ],
           },
         ],
@@ -815,11 +835,13 @@ export class SecurityEventsComponent implements OnInit {
           editSecEventTime - getIpGeoInfoTime
         );
 
+        let mergedSecEvents = []
+          .concat(this.threatList)
+          .concat(this.violationList)
+          .concat(this.incidentList);
+
         this.securityEventsService.cachedSecurityEvents =
-          this.securityEventsService.cachedSecurityEvents
-            .concat(this.threatList)
-            .concat(this.violationList)
-            .concat(this.incidentList);
+          _.cloneDeep(mergedSecEvents);
 
         let mergeSecEventTime = new Date().getTime();
         console.log(
@@ -862,8 +884,8 @@ export class SecurityEventsComponent implements OnInit {
               )!
             );
           } else {
-            this.securityEventsService.displayedSecurityEvents = JSON.parse(
-              JSON.stringify(this.securityEventsService.cachedSecurityEvents)
+            this.securityEventsService.displayedSecurityEvents = _.cloneDeep(
+              this.securityEventsService.cachedSecurityEvents
             );
             this.printableData = this.getPrintableData(
               this.securityEventsService.displayedSecurityEvents
@@ -872,9 +894,12 @@ export class SecurityEventsComponent implements OnInit {
         }
         this.securityEventsService.displayedSecurityEvents =
           this.securityEventsService.displayedSecurityEvents.filter(event => {
-            return this.advancedFilterModalService._includeFilter(event, this.filter.value || '');
+            return this.advancedFilterModalService._includeFilter(
+              event,
+              this.filter.value || ''
+            );
           });
-        console.log("this.advFilterConf", this.advFilterConf);
+        console.log('this.advFilterConf', this.advFilterConf);
         this.setAdvancedFilter(this.advFilterConf);
         this.onQuickFilterChange(this.filter.value || '');
         this.isDataReady = true;

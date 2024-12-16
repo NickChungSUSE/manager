@@ -80,6 +80,7 @@ export class ContainerDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('acceptedTooltip') acceptedTooltip!: MatTooltip;
   isVulsAuthorized!: boolean;
   isWriteVulsAuthorized!: boolean;
+  selectedVulScore: String = 'V3';
   get processHistoryMsg() {
     return !this.showProcessHistory
       ? this.tr.instant('containers.process.SHOW_EXITED')
@@ -109,6 +110,11 @@ export class ContainerDetailsComponent implements OnInit, OnDestroy {
     const csv = !this.vulEmpty;
     return +acceptVul + +toggleVul + +csv;
   }
+  get activeScore() {
+    return this.selectedVulScore === 'V2'
+      ? this.tr.instant('scan.gridHeader.SCORE_V2')
+      : this.tr.instant('scan.gridHeader.SCORE_V3');
+  }
 
   constructor(
     private containersService: ContainersService,
@@ -125,7 +131,11 @@ export class ContainerDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.filter.valueChanges
-      .pipe(tap((value: string | null) => this.quickFilterService.setTextInput(value || '')))
+      .pipe(
+        tap((value: string | null) =>
+          this.quickFilterService.setTextInput(value || '')
+        )
+      )
       .subscribe();
     this.isVulsAuthorized = this.authUtils.getDisplayFlag('vuls_profile');
     this.isWriteVulsAuthorized =
@@ -312,5 +322,17 @@ export class ContainerDetailsComponent implements OnInit, OnDestroy {
     }
     if (![1, 2].includes(this.activeTabIndex))
       this.versionInfoService.setVersionInfo(null, '');
+  }
+  changeScoreView(val: string) {
+    this.selectedVulScore = val;
+    if (val === 'V2') {
+      this.vulGrid.gridApi?.setColumnsVisible(['score_v3'], false);
+      this.vulGrid.gridApi?.setColumnsVisible(['score'], true);
+    } else {
+      this.vulGrid.gridApi?.setColumnsVisible(['score'], false);
+      this.vulGrid.gridApi?.setColumnsVisible(['score_v3'], true);
+    }
+    this.vulGrid.gridApi.sizeColumnsToFit();
+    this.cd.markForCheck();
   }
 }
