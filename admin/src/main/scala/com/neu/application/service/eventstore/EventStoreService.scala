@@ -1,15 +1,54 @@
 package com.neu.application.service.eventstore
 
+import com.neu.application.model.EventDto
+import com.neu.application.service.DefaultJsonFormats
+import org.apache.pekko.http.scaladsl.model.ContentTypes
+import com.neu.application.model.EventDtoJsonProtocol.*
 import com.neu.domain.model.{ AggregateType, Event, EventType }
 import com.neu.domain.service.EventService
 import com.typesafe.scalalogging.LazyLogging
 import io.opentelemetry.api.baggage.Baggage
-import org.apache.pekko.http.scaladsl.model.{ HttpEntity, HttpRequest, HttpResponse }
+import org.apache.pekko.http.scaladsl.model.{ HttpEntity, HttpRequest, HttpResponse, StatusCodes }
+import org.apache.pekko.http.scaladsl.server.{ Directives, Route }
+import spray.json.*
 
 import java.util.UUID
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
+import scala.util.{ Failure, Success }
+import scala.concurrent.ExecutionContext.Implicits.global
 
-class EventStoreService(eventService: EventService) extends LazyLogging {
+class EventStoreService(eventService: EventService)
+    extends Directives
+    with DefaultJsonFormats
+    with LazyLogging {
+
+  private val map: Event => EventDto = e =>
+    EventDto(
+      id = e.id.toString,
+      event_type = e.event_type.toString,
+      aggregate_id = e.aggregate_id.toString,
+      aggregate_type = e.aggregate_type.toString,
+      create_at = e.create_at,
+      data = e.data.toString,
+      metadata = e.metadata.toString
+    )
+
+  def findEvents(): Route =
+    onComplete(eventService.findEvents().map(_.map(map))) {
+      case Success(dtos) =>
+        val jsonResponse = JsArray(dtos.map(_.toJson).toVector)
+        complete(HttpEntity(ContentTypes.`application/json`, jsonResponse.compactPrint))
+      case Failure(ex)   =>
+        complete(StatusCodes.InternalServerError -> ex.getMessage)
+    }
+
+  def getEventById(id: String): Route =
+    onComplete(eventService.getEventById(UUID.fromString(id)).map(map)) {
+      case Success(dto) =>
+        complete(HttpEntity(ContentTypes.`application/json`, dto.toJson.compactPrint))
+      case Failure(ex)  =>
+        complete(StatusCodes.InternalServerError -> ex.getMessage)
+    }
 
   def create(
     correlationId: String,
@@ -96,7 +135,4 @@ class EventStoreService(eventService: EventService) extends LazyLogging {
       eventService.create(event)
     } finally scope.close()
   }
-
-  private def extractBody(entity: HttpEntity.Strict): Future[String] =
-    Future.successful(entity.data.utf8String)
 }

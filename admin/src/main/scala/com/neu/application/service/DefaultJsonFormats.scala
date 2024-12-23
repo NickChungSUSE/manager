@@ -14,6 +14,7 @@ import spray.json.{
   JsObject,
   JsString,
   JsValue,
+  JsonFormat,
   JsonParser,
   RootJsonFormat
 }

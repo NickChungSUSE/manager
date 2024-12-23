@@ -2,7 +2,7 @@ package com.neu.application.core
 
 import com.neu.api.Api
 import CommonSettings.httpPort
-import com.neu.web.StaticResources
+import com.neu.web.{ DependencyConfiguration, StaticResources }
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory.*
 import com.typesafe.scalalogging.LazyLogging
@@ -27,6 +27,7 @@ trait BootedCore
     with StaticResources
     with MySslConfiguration
     with LazyLogging {
+  import DependencyConfiguration.given
 
   given system: ActorSystem                        = ActorSystem("manager-system")
   given materializer: Materializer                 = Materializer(system)

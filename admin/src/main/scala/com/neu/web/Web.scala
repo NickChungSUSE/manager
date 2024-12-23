@@ -1,6 +1,5 @@
 package com.neu.web
 
-import com.neu.api.Api
 import com.neu.application.core.{ Core, CoreActors }
 
 /**
@@ -10,4 +9,4 @@ import com.neu.application.core.{ Core, CoreActors }
  * Benefits of separate ``ActorSystem`` include the ability to use completely different
  * configuration, especially when it comes to the threading model.
  */
-trait Web extends StaticResources with CoreActors with Core with Api
+trait Web extends StaticResources with CoreActors with Core
