@@ -160,7 +160,7 @@ trait MySslConfiguration extends LazyLogging {
     val cf: CertificateFactory = CertificateFactory.getInstance("X.509")
     val trustManagerFactory    = TrustManagerFactory.getInstance("PKIX")
     val keyManagerFactory      = KeyManagerFactory.getInstance("PKIX")
-    val ks: KeyStore           = KeyStore.getInstance("PKCS12")
+    val ks: KeyStore           = KeyStore.getInstance("JKS")
     val keyFactory: KeyFactory = KeyFactory.getInstance("RSA")
 
     var fisCert: FileInputStream     = null
